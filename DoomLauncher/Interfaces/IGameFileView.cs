@@ -27,6 +27,7 @@ namespace DoomLauncher
         event DragEventHandler DragDrop;
         event GameFileEventHandler GameFileEnter;
         event GameFileEventHandler GameFileLeave;
+        event ScrollEventHandler GameFileViewScroll;
 
         void SetDisplayText(string text);
         void SetContextMenuStrip(ContextMenuStrip menu);

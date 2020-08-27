@@ -17,6 +17,7 @@ namespace DoomLauncher
         public event KeyEventHandler ViewKeyDown;
         public event GameFileEventHandler GameFileEnter;
         public event GameFileEventHandler GameFileLeave;
+        public event ScrollEventHandler GameFileViewScroll;
 
         private readonly int LayoutRow = 0;
 
@@ -120,6 +121,7 @@ namespace DoomLauncher
                 flpMain.BackColor = SystemColors.Window;
                 flpMain.KeyPress += GameFileTileViewControl_KeyPress;
                 flpMain.KeyDown += GameFileTileViewControl_KeyDown;
+                flpMain.Scroll += GameFileTileViewControl_Scroll;
 
                 SetPageData(pagingControl.PageIndex, false);
                 SetSavedScrollValue();
@@ -131,6 +133,7 @@ namespace DoomLauncher
             {
                 flpMain.KeyPress -= GameFileTileViewControl_KeyPress;
                 flpMain.KeyDown -= GameFileTileViewControl_KeyDown;
+                flpMain.Scroll -= GameFileTileViewControl_Scroll;
 
                 m_selectedTiles.ForEach(x => x.SetSelected(false));
                 m_lastScrollPos = flpMain.VerticalScroll.Value;
@@ -287,6 +290,11 @@ namespace DoomLauncher
             }
 
             ViewKeyDown?.Invoke(this, e);
+        }
+
+        private void GameFileTileViewControl_Scroll(object sender, ScrollEventArgs e)
+        {
+            GameFileViewScroll?.Invoke(this, e);
         }
 
         private int GetNextTileIndex(int index, Keys keycode)

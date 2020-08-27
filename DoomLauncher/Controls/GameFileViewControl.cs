@@ -16,6 +16,7 @@ namespace DoomLauncher
         public event EventHandler ItemClick;
         public event EventHandler ItemDoubleClick;
         public event EventHandler SelectionChange;
+        public event ScrollEventHandler GameFileViewScroll;
         public event CancelEventHandler CustomRowPaint;
         public event KeyPressEventHandler ViewKeyPress;
         public event KeyEventHandler ViewKeyDown;
@@ -276,6 +277,13 @@ namespace DoomLauncher
 
             dgvMain.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             dgvMain.AllowUserToResizeRows = false;
+
+            dgvMain.Scroll += DgvMain_Scroll;
+        }
+
+        private void DgvMain_Scroll(object sender, ScrollEventArgs e)
+        {
+            GameFileViewScroll?.Invoke(this, e);
         }
 
         private void dgvMain_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)

@@ -46,8 +46,17 @@ namespace DoomLauncher
                 ITabView viewAdd = (ITabView)view.Clone();
                 viewAdd.GameFileViewControl.MultiSelect = MultiSelect;
                 viewAdd.GameFileViewControl.ItemDoubleClick += GameFileViewControl_RowDoubleClicked;
+                viewAdd.GameFileViewControl.GameFileViewScroll += FileSelectForm_GameFileViewScroll;
                 m_tabHandler.AddTab(viewAdd);
             }
+        }
+
+        private void FileSelectForm_GameFileViewScroll(object sender, ScrollEventArgs e)
+        {
+            // This is to fix strange behavior when using High DPI scaling override (System (Enhanced)) in the Compatibility properties for the exe
+            // For whatever reason the scrolling doesn't invalidate in the scenario and we have to force it through the entire control
+            // https://github.com/nstlaurent/DoomLauncher/issues/181
+            Invalidate(true);
         }
 
         private void GameFileViewControl_RowDoubleClicked(object sender, EventArgs e)
