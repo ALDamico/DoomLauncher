@@ -1,4 +1,5 @@
-﻿using DoomLauncher.SaveGame;
+﻿using System;
+using DoomLauncher.SaveGame;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTest.Tests
@@ -37,6 +38,28 @@ namespace UnitTest.Tests
             ZDoomSaveGameReader reader = new ZDoomSaveGameReader(save1);
 
             Assert.AreEqual("Autosave Aug 28 06:25", reader.GetName());
+        }
+
+        [TestMethod]
+        public void TestZdoomGlobals()
+        {
+            string save1 = "save63.zds";
+            TestUtil.CopyResourceFile(save1);
+
+            ZDoomSaveGameReader reader = new ZDoomSaveGameReader(save1);
+
+            var saveGame = reader.GetInfoFromFile(null, null);
+
+            Assert.IsNotNull(saveGame.Picture);
+            Assert.AreEqual(3, saveGame.FoundSecrets);
+            Assert.AreEqual(3, saveGame.FoundItems);
+            Assert.AreEqual(104, saveGame.KilledMonsters);
+            Assert.AreEqual(182, saveGame.TotalMonsters);
+            Assert.AreEqual(10, saveGame.TotalSecrets);
+            Assert.AreEqual(3, saveGame.FoundSecrets);
+            Assert.AreEqual(3, saveGame.FoundItems);
+            Assert.AreEqual(8, saveGame.TotalItems);
+            Assert.AreEqual(TimeSpan.FromSeconds(1), saveGame.MapTime);
         }
     }
 }

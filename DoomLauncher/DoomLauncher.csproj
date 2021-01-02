@@ -179,7 +179,9 @@
       <DependentUpon>TagSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataSources\StaticTagData.cs" />
-    <Compile Include="SaveGame\GZDoomSaveGameReader.cs" />
+    <Compile Include="SaveGame\GZDoomHelperClasses\GZDoomGlobals.cs" />
+    <Compile Include="SaveGame\GZDoomHelperClasses\GZDoomInfo.cs" />
+    <Compile Include="SaveGame\GZDoomHelperClasses\GZDoomSaveMapInfo.cs" />
     <Compile Include="SaveGame\SaveGameFile.cs" />
     <Compile Include="SourcePort\WoofSourcePort.cs" />
     <Compile Include="Update\ApplicationUpdater.cs" />

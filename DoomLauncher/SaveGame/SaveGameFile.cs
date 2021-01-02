@@ -1,6 +1,7 @@
 ﻿using DoomLauncher.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace DoomLauncher.SaveGame
     {
         public string MapName { get; set; }
         public string MapTitle { get; set; }
-        public Stream Picture { get; set; }
+        public Image Picture { get; set; }
         public int PlayerHealth { get; set; }
         public int PlayerArmor { get; set; }
         public DateTime? Timestamp { get; set; }
@@ -26,6 +27,12 @@ namespace DoomLauncher.SaveGame
         public int GameEpisode { get; set; }
         public int ArmorType { get; set; }
         public int GameMap { get; set; }
+        public int FoundItems { get; set; }
+        public int FoundSecrets { get; set; }
+        public int KilledMonsters { get; set; }
+        public int TotalItems { get; set; }
+        public int TotalSecrets { get; set; }
+        public int TotalMonsters { get; set; }
 
         public string GetArmorTypeName()
         {
