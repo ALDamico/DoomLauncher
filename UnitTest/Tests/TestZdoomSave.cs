@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DoomLauncher.SaveGame;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -49,6 +50,28 @@ namespace UnitTest.Tests
             ZDoomSaveGameReader reader = new ZDoomSaveGameReader(save1);
 
             var saveGame = reader.GetInfoFromFile(null, null);
+
+            Assert.IsNotNull(saveGame.Picture);
+            Assert.AreEqual(3, saveGame.FoundSecrets);
+            Assert.AreEqual(3, saveGame.FoundItems);
+            Assert.AreEqual(104, saveGame.KilledMonsters);
+            Assert.AreEqual(182, saveGame.TotalMonsters);
+            Assert.AreEqual(10, saveGame.TotalSecrets);
+            Assert.AreEqual(3, saveGame.FoundSecrets);
+            Assert.AreEqual(3, saveGame.FoundItems);
+            Assert.AreEqual(8, saveGame.TotalItems);
+            Assert.AreEqual(TimeSpan.FromSeconds(1), saveGame.MapTime);
+        }
+
+        [TestMethod]
+        public async Task TestZdoomSaveAsync()
+        {
+            string save1 = "save63.zds";
+            TestUtil.CopyResourceFile(save1);
+
+            ZDoomSaveGameReader reader = new ZDoomSaveGameReader(save1);
+
+            var saveGame = await reader.GetInfoFromFileAsync(null, null);
 
             Assert.IsNotNull(saveGame.Picture);
             Assert.AreEqual(3, saveGame.FoundSecrets);

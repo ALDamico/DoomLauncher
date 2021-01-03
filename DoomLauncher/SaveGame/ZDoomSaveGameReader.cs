@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -7,6 +8,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using DoomLauncher.Interfaces;
 using DoomLauncher.SaveGame.GZDoomHelperClasses;
 
@@ -88,6 +90,93 @@ namespace DoomLauncher.SaveGame
             }
 
             return null;
+        }
+        
+        
+
+        public async Task<ISaveGameFile> GetInfoFromFileAsync(IIWadData iWadData, ISourcePortData sourcePort)
+        {
+            using (ZipArchive za = ZipFile.OpenRead(m_file))
+            {
+                ISaveGameFile saveGame = new SaveGameFile();
+                var entries = za.Entries;
+                GZDoomGlobals globals = null;
+                int totalTimeTics = -1;
+
+                List<Task> tasks = new List<Task>();
+                
+                
+                foreach (var entry in entries)
+                {
+                    if (entry.Name.Equals("info.json"))
+                    {
+                        
+                        tasks.Add(Task.Run(() =>
+                        {
+                            var jsonInfo = ReadInfoJsonFile(entry);
+                            if (jsonInfo != null)
+                            {
+                                saveGame.MapTitle = jsonInfo.MapTitle;
+                            }
+                        }));
+                        
+                    }
+
+                    if (entry.Name.Equals("savepic.png"))
+                    {
+                        tasks.Add(Task.Run(() =>
+                        {
+                            var pic = ReadSavepic(entry);
+                            saveGame.Picture = pic;
+                        }));
+                    }
+
+                    if (entry.Name.Equals("globals.json"))
+                    {
+                        tasks.Add(Task.Run(() =>
+                        {
+                            globals = GetInfoFromGlobalsFile(entry);
+                            if (globals == null)
+                            {
+                                return;
+                            }
+                            if (globals.LevelTime != null)
+                            {
+                                saveGame.MapTime = globals.LevelTime.Value;
+                            }
+
+                            saveGame.SkillLevel = globals.SkillLevel;
+                        }));
+                        
+                    }
+
+                    if (Regex.Match(entry.Name, "\\.map\\.json").Success)
+                    {
+                        tasks.Add(Task.Run(() =>
+                        {
+                            var saveMapInfo = ReadInfoFromMapFile(entry, globals);
+                            saveGame.FoundSecrets = saveMapInfo.FoundSecrets;
+                            saveGame.FoundItems = saveMapInfo.FoundItems;
+                            saveGame.KilledMonsters = saveMapInfo.KilledMonsters;
+                            saveGame.TotalItems = saveMapInfo.TotalItems;
+                            saveGame.TotalMonsters = saveMapInfo.TotalMonsters;
+                            saveGame.TotalSecrets = saveMapInfo.TotalSecrets;
+                            totalTimeTics = saveMapInfo.GameTime;
+                        }));
+                        
+                    }
+                }
+
+                await Task.WhenAll(tasks);
+                if (globals?.TicRate > 0 && totalTimeTics >= 0)
+                {
+                    var totalTimeSeconds = totalTimeTics / globals.TicRate;
+                    saveGame.GameTime = TimeSpan.FromSeconds(totalTimeSeconds);
+                }
+                saveGame.Timestamp = File.GetLastWriteTime(m_file);
+
+                return saveGame;
+            }
         }
 
         public ISaveGameFile GetInfoFromFile(IIWadData iWadData, ISourcePortData sourcePort)
