@@ -33,6 +33,7 @@ namespace DoomLauncher.SaveGame
         public int TotalItems { get; set; }
         public int TotalSecrets { get; set; }
         public int TotalMonsters { get; set; }
+        public string FullName { get; set; }
 
         public string GetArmorTypeName()
         {

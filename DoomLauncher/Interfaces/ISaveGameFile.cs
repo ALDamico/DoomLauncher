@@ -31,5 +31,6 @@ namespace DoomLauncher.Interfaces
         int TotalItems { get; set; }
         int TotalSecrets { get; set; }
         int TotalMonsters { get; set; }
+        string FullName { get; set; }
     }
 }

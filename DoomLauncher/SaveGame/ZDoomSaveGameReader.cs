@@ -94,7 +94,7 @@ namespace DoomLauncher.SaveGame
         
         
 
-        public async Task<ISaveGameFile> GetInfoFromFileAsync(IIWadData iWadData, ISourcePortData sourcePort)
+        public async Task<ISaveGameFile> GetInfoFromFileAsync(IGameFile gameFile, ISourcePortData sourcePort)
         {
             using (ZipArchive za = ZipFile.OpenRead(m_file))
             {
@@ -179,7 +179,7 @@ namespace DoomLauncher.SaveGame
             }
         }
 
-        public ISaveGameFile GetInfoFromFile(IIWadData iWadData, ISourcePortData sourcePort)
+        public ISaveGameFile GetInfoFromFile(IGameFile gameFile, ISourcePortData sourcePort)
         {
             using (ZipArchive za = ZipFile.OpenRead(m_file))
             {
@@ -234,6 +234,7 @@ namespace DoomLauncher.SaveGame
                     saveGame.GameTime = TimeSpan.FromSeconds(totalTimeSeconds);
                 }
                 saveGame.Timestamp = File.GetLastWriteTime(m_file);
+                saveGame.FullName = $@"""{m_file}"""; // Adding double quotes to prevent issues from paths containing spaces
 
                 return saveGame;
             }

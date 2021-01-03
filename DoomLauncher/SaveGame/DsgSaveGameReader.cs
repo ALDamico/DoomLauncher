@@ -38,6 +38,11 @@ namespace DoomLauncher.SaveGame
             return Path.GetFileName(m_file);
         }
 
+        public ISaveGameFile GetInfoFromFile(IGameFile gameFile, ISourcePortData sourcePort)
+        {
+            throw new NotImplementedException();
+        }
+
         public ISaveGameFile GetInfoFromFile(IIWadData iWadData, ISourcePortData sourcePort)
         {
             using (var stream = File.OpenRead(m_file))

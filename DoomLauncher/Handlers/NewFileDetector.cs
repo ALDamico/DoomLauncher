@@ -98,6 +98,11 @@ namespace DoomLauncher
             }
         }
 
+        public FileInfo GetMostRecentFile()
+        {
+            return GetFiles(Directory).OrderBy(f => f.LastWriteTime).LastOrDefault();
+        }
+
         public bool ScanSubDirectories { get; set; }
         public string Directory { get; set; }
         private FileInfo[] BaseFiles { get; set; }

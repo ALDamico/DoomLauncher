@@ -20,7 +20,7 @@ namespace DoomLauncher
         }
 
         public bool Launch(LauncherPath gameFileDirectory, LauncherPath tempDirectory,
-            IGameFile gameFile, ISourcePortData sourcePort, bool isGameFileIwad)
+            IGameFile gameFile, ISourcePortData sourcePort, bool isGameFileIwad, LaunchData launchData)
         {
             if (!Directory.Exists(sourcePort.Directory.GetFullPath()))
             {
@@ -32,7 +32,7 @@ namespace DoomLauncher
             GameFile = gameFile;
             SourcePort = sourcePort;
 
-            string launchParameters = GetLaunchParameters(gameFileDirectory, tempDirectory, gameFile, sourcePort, isGameFileIwad);
+            string launchParameters = GetLaunchParameters(gameFileDirectory, tempDirectory, gameFile, sourcePort, isGameFileIwad, launchData);
 
             if (!string.IsNullOrEmpty(launchParameters))
             {
@@ -59,7 +59,7 @@ namespace DoomLauncher
         }
 
         public string GetLaunchParameters(LauncherPath gameFileDirectory, LauncherPath tempDirectory,
-            IGameFile gameFile, ISourcePortData sourcePortData, bool isGameFileIwad)
+            IGameFile gameFile, ISourcePortData sourcePortData, bool isGameFileIwad, LaunchData launchData)
         {
             ISourcePort sourcePort = SourcePortUtil.CreateSourcePort(sourcePortData);
             StringBuilder sb = new StringBuilder();
@@ -86,6 +86,7 @@ namespace DoomLauncher
 
             launchFiles = SortParameters(launchFiles).ToList();
             BuildLaunchString(sb, sourcePort, launchFiles);
+            ExtraParameters = launchData.GameProfile.SettingsExtraParams;
 
             if (Map != null)
             {

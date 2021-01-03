@@ -26,7 +26,6 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        [System.CodeDom.Compiler.GeneratedCode("Winform Designer", "VS2015 SP1")]
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayForm));
@@ -38,6 +37,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tblProfile = new System.Windows.Forms.TableLayoutPanel();
             this.profileToolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.newProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label5 = new System.Windows.Forms.Label();
             this.cmbProfiles = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -63,8 +66,10 @@
             this.lnkPreviewLaunchParameters = new System.Windows.Forms.LinkLabel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tblFiles = new System.Windows.Forms.TableLayoutPanel();
+            this.ctrlFiles = new DoomLauncher.FilesCtrl();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblInfo = new System.Windows.Forms.Label();
+            this.pbInfo = new System.Windows.Forms.PictureBox();
             this.flp1 = new System.Windows.Forms.FlowLayoutPanel();
             this.lnkSpecific = new System.Windows.Forms.LinkLabel();
             this.lnkCustomParameters = new System.Windows.Forms.LinkLabel();
@@ -74,12 +79,8 @@
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnSaveSettings = new System.Windows.Forms.Button();
             this.flpButtons = new System.Windows.Forms.FlowLayoutPanel();
-            this.ctrlFiles = new DoomLauncher.FilesCtrl();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.newProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pbInfo = new System.Windows.Forms.PictureBox();
+            this.m_loadGameCheckbox = new System.Windows.Forms.CheckBox();
+            this.saveGameInfoLabel = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.tblProfile.SuspendLayout();
             this.profileToolStrip.SuspendLayout();
@@ -88,13 +89,13 @@
             this.groupBox3.SuspendLayout();
             this.tblFiles.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.pbInfo)).BeginInit();
             this.flp1.SuspendLayout();
             this.tblMain.SuspendLayout();
             this.tblInner.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlBottom.SuspendLayout();
             this.flpButtons.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbSourcePorts
@@ -184,8 +185,7 @@
             this.profileToolStrip.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.profileToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.profileToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.profileToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripDropDownButton1});
+            this.profileToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.toolStripDropDownButton1});
             this.profileToolStrip.Location = new System.Drawing.Point(212, 2);
             this.profileToolStrip.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.profileToolStrip.Name = "profileToolStrip";
@@ -193,6 +193,44 @@
             this.profileToolStrip.Size = new System.Drawing.Size(32, 23);
             this.profileToolStrip.TabIndex = 12;
             this.profileToolStrip.Text = "Options";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {this.newProfileToolStripMenuItem, this.editProfileToolStripMenuItem, this.deleteProfileToolStripMenuItem});
+            this.toolStripDropDownButton1.Image = global::DoomLauncher.Properties.Resources.Bars;
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Margin = new System.Windows.Forms.Padding(2, 1, 0, 2);
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
+            this.toolStripDropDownButton1.Text = "Options";
+            // 
+            // newProfileToolStripMenuItem
+            // 
+            this.newProfileToolStripMenuItem.Image = global::DoomLauncher.Properties.Resources.File;
+            this.newProfileToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.newProfileToolStripMenuItem.Name = "newProfileToolStripMenuItem";
+            this.newProfileToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
+            this.newProfileToolStripMenuItem.Text = "New Profile...";
+            this.newProfileToolStripMenuItem.Click += new System.EventHandler(this.newProfileToolStripMenuItem_Click);
+            // 
+            // editProfileToolStripMenuItem
+            // 
+            this.editProfileToolStripMenuItem.Image = global::DoomLauncher.Properties.Resources.Edit;
+            this.editProfileToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.editProfileToolStripMenuItem.Name = "editProfileToolStripMenuItem";
+            this.editProfileToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
+            this.editProfileToolStripMenuItem.Text = "Rename Profile...";
+            this.editProfileToolStripMenuItem.Click += new System.EventHandler(this.editProfileToolStripMenuItem_Click);
+            // 
+            // deleteProfileToolStripMenuItem
+            // 
+            this.deleteProfileToolStripMenuItem.Image = global::DoomLauncher.Properties.Resources.Delete;
+            this.deleteProfileToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.deleteProfileToolStripMenuItem.Name = "deleteProfileToolStripMenuItem";
+            this.deleteProfileToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
+            this.deleteProfileToolStripMenuItem.Text = "Delete Profile";
+            this.deleteProfileToolStripMenuItem.Click += new System.EventHandler(this.deleteProfileToolStripMenuItem_Click);
             // 
             // label5
             // 
@@ -397,6 +435,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.saveGameInfoLabel);
+            this.groupBox4.Controls.Add(this.m_loadGameCheckbox);
             this.groupBox4.Controls.Add(this.lnkFilterSettings);
             this.groupBox4.Controls.Add(this.chkScreenFilter);
             this.groupBox4.Controls.Add(this.lnkPreviewLaunchParameters);
@@ -405,7 +445,7 @@
             this.groupBox4.Controls.Add(this.lnkMore);
             this.groupBox4.Location = new System.Drawing.Point(3, 301);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(256, 93);
+            this.groupBox4.Size = new System.Drawing.Size(256, 132);
             this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             // 
@@ -448,7 +488,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(265, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(236, 395);
+            this.groupBox3.Size = new System.Drawing.Size(236, 460);
             this.groupBox3.TabIndex = 18;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Additional Files / Load Order";
@@ -468,8 +508,16 @@
             this.tblFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tblFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tblFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tblFiles.Size = new System.Drawing.Size(230, 376);
+            this.tblFiles.Size = new System.Drawing.Size(230, 441);
             this.tblFiles.TabIndex = 0;
+            // 
+            // ctrlFiles
+            // 
+            this.ctrlFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ctrlFiles.Location = new System.Drawing.Point(3, 43);
+            this.ctrlFiles.Name = "ctrlFiles";
+            this.ctrlFiles.Size = new System.Drawing.Size(224, 371);
+            this.ctrlFiles.TabIndex = 20;
             // 
             // panel1
             // 
@@ -491,12 +539,20 @@
             this.lblInfo.TabIndex = 25;
             this.lblInfo.Text = "label";
             // 
+            // pbInfo
+            // 
+            this.pbInfo.Location = new System.Drawing.Point(3, 7);
+            this.pbInfo.Name = "pbInfo";
+            this.pbInfo.Size = new System.Drawing.Size(16, 16);
+            this.pbInfo.TabIndex = 24;
+            this.pbInfo.TabStop = false;
+            // 
             // flp1
             // 
             this.flp1.Controls.Add(this.lnkSpecific);
             this.flp1.Controls.Add(this.lnkCustomParameters);
             this.flp1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flp1.Location = new System.Drawing.Point(0, 352);
+            this.flp1.Location = new System.Drawing.Point(0, 417);
             this.flp1.Margin = new System.Windows.Forms.Padding(0);
             this.flp1.Name = "flp1";
             this.flp1.Size = new System.Drawing.Size(230, 24);
@@ -539,7 +595,7 @@
             this.tblMain.RowCount = 2;
             this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tblMain.Size = new System.Drawing.Size(504, 433);
+            this.tblMain.Size = new System.Drawing.Size(504, 498);
             this.tblMain.TabIndex = 21;
             // 
             // tblInner
@@ -555,7 +611,7 @@
             this.tblInner.Name = "tblInner";
             this.tblInner.RowCount = 1;
             this.tblInner.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblInner.Size = new System.Drawing.Size(504, 401);
+            this.tblInner.Size = new System.Drawing.Size(504, 466);
             this.tblInner.TabIndex = 0;
             // 
             // pnlLeft
@@ -567,7 +623,7 @@
             this.pnlLeft.Location = new System.Drawing.Point(0, 0);
             this.pnlLeft.Margin = new System.Windows.Forms.Padding(0);
             this.pnlLeft.Name = "pnlLeft";
-            this.pnlLeft.Size = new System.Drawing.Size(262, 401);
+            this.pnlLeft.Size = new System.Drawing.Size(262, 466);
             this.pnlLeft.TabIndex = 0;
             // 
             // pnlBottom
@@ -576,7 +632,7 @@
             this.pnlBottom.Controls.Add(this.flpButtons);
             this.pnlBottom.Controls.Add(this.chkRemember);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 401);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 466);
             this.pnlBottom.Margin = new System.Windows.Forms.Padding(0);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Size = new System.Drawing.Size(504, 32);
@@ -604,62 +660,24 @@
             this.flpButtons.Size = new System.Drawing.Size(200, 32);
             this.flpButtons.TabIndex = 5;
             // 
-            // ctrlFiles
+            // m_loadGameCheckbox
             // 
-            this.ctrlFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ctrlFiles.Location = new System.Drawing.Point(3, 43);
-            this.ctrlFiles.Name = "ctrlFiles";
-            this.ctrlFiles.Size = new System.Drawing.Size(224, 306);
-            this.ctrlFiles.TabIndex = 20;
+            this.m_loadGameCheckbox.Location = new System.Drawing.Point(6, 86);
+            this.m_loadGameCheckbox.Name = "m_loadGameCheckbox";
+            this.m_loadGameCheckbox.Size = new System.Drawing.Size(159, 24);
+            this.m_loadGameCheckbox.TabIndex = 25;
+            this.m_loadGameCheckbox.Text = "Load Most Recent Save";
+            this.m_loadGameCheckbox.UseVisualStyleBackColor = true;
             // 
-            // toolStripDropDownButton1
+            // saveGameInfoLabel
             // 
-            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newProfileToolStripMenuItem,
-            this.editProfileToolStripMenuItem,
-            this.deleteProfileToolStripMenuItem});
-            this.toolStripDropDownButton1.Image = global::DoomLauncher.Properties.Resources.Bars;
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Margin = new System.Windows.Forms.Padding(2, 1, 0, 2);
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
-            this.toolStripDropDownButton1.Text = "Options";
-            // 
-            // newProfileToolStripMenuItem
-            // 
-            this.newProfileToolStripMenuItem.Image = global::DoomLauncher.Properties.Resources.File;
-            this.newProfileToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.newProfileToolStripMenuItem.Name = "newProfileToolStripMenuItem";
-            this.newProfileToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
-            this.newProfileToolStripMenuItem.Text = "New Profile...";
-            this.newProfileToolStripMenuItem.Click += new System.EventHandler(this.newProfileToolStripMenuItem_Click);
-            // 
-            // editProfileToolStripMenuItem
-            // 
-            this.editProfileToolStripMenuItem.Image = global::DoomLauncher.Properties.Resources.Edit;
-            this.editProfileToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.editProfileToolStripMenuItem.Name = "editProfileToolStripMenuItem";
-            this.editProfileToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
-            this.editProfileToolStripMenuItem.Text = "Rename Profile...";
-            this.editProfileToolStripMenuItem.Click += new System.EventHandler(this.editProfileToolStripMenuItem_Click);
-            // 
-            // deleteProfileToolStripMenuItem
-            // 
-            this.deleteProfileToolStripMenuItem.Image = global::DoomLauncher.Properties.Resources.Delete;
-            this.deleteProfileToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.deleteProfileToolStripMenuItem.Name = "deleteProfileToolStripMenuItem";
-            this.deleteProfileToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
-            this.deleteProfileToolStripMenuItem.Text = "Delete Profile";
-            this.deleteProfileToolStripMenuItem.Click += new System.EventHandler(this.deleteProfileToolStripMenuItem_Click);
-            // 
-            // pbInfo
-            // 
-            this.pbInfo.Location = new System.Drawing.Point(3, 7);
-            this.pbInfo.Name = "pbInfo";
-            this.pbInfo.Size = new System.Drawing.Size(16, 16);
-            this.pbInfo.TabIndex = 24;
-            this.pbInfo.TabStop = false;
+            this.saveGameInfoLabel.Location = new System.Drawing.Point(171, 86);
+            this.saveGameInfoLabel.Name = "saveGameInfoLabel";
+            this.saveGameInfoLabel.Size = new System.Drawing.Size(73, 24);
+            this.saveGameInfoLabel.TabIndex = 26;
+            this.saveGameInfoLabel.TabStop = true;
+            this.saveGameInfoLabel.Text = "More Info...";
+            this.saveGameInfoLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.saveGameInfoLabel_LinkClicked);
             // 
             // PlayForm
             // 
@@ -667,9 +685,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(504, 433);
+            this.ClientSize = new System.Drawing.Size(504, 498);
             this.Controls.Add(this.tblMain);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
             this.Name = "PlayForm";
             this.Text = "Launch";
             this.groupBox1.ResumeLayout(false);
@@ -686,6 +704,7 @@
             this.tblFiles.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.pbInfo)).EndInit();
             this.flp1.ResumeLayout(false);
             this.flp1.PerformLayout();
             this.tblMain.ResumeLayout(false);
@@ -694,10 +713,11 @@
             this.pnlBottom.ResumeLayout(false);
             this.pnlBottom.PerformLayout();
             this.flpButtons.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).EndInit();
             this.ResumeLayout(false);
-
         }
+
+        private System.Windows.Forms.CheckBox m_loadGameCheckbox;
+        private System.Windows.Forms.LinkLabel saveGameInfoLabel;
 
         #endregion
 

@@ -35,7 +35,9 @@ namespace DoomLauncher
 
         private void HandlePlay(IEnumerable<IGameFile> gameFiles, ISourcePortData sourcePort)
         {
-            LaunchData launchData = GetLaunchFiles(gameFiles);
+            ISaveGameFile saveGame = null;
+
+            LaunchData launchData = GetLaunchFiles(gameFiles, saveGame);
 
             if (launchData.Success)
             {
@@ -59,8 +61,13 @@ namespace DoomLauncher
                         try
                         {
                             HandlePlaySettings(m_currentPlayForm, m_currentPlayForm.SelectedGameProfile);
+                            if (m_currentPlayForm!= null && m_currentPlayForm.AutoLoadLastSave)
+                            {
+                                saveGame = GetMostRecentSaveGame();
+                                launchData.AddSaveGame(saveGame);
+                            }
                             if (m_currentPlayForm.SelectedSourcePort != null)
-                                m_playInProgress = StartPlay(launchData.GameFile, m_currentPlayForm.SelectedSourcePort, m_currentPlayForm.ScreenFilter);
+                                m_playInProgress = StartPlay(launchData.GameFile, m_currentPlayForm.SelectedSourcePort, m_currentPlayForm.ScreenFilter, launchData);
                             ctrlSummary.PauseSlideshow();
                         }
                         catch (IOException)
@@ -81,7 +88,35 @@ namespace DoomLauncher
             }
         }
 
-        private LaunchData GetLaunchFiles(IEnumerable<IGameFile> gameFiles)
+        private ISaveGameFile GetMostRecentSaveGame()
+        {
+            var sourcePort =  m_currentPlayForm.SelectedSourcePort;
+            
+            if (sourcePort != null)
+            {
+                var saveLocation = sourcePort.AltSaveDirectory;
+                if (string.IsNullOrEmpty(saveLocation.GetFullPath()))
+                {
+                    saveLocation = sourcePort.Directory;
+                }
+
+
+                var saveFileDetector = CreateSaveGameDetector(saveLocation);
+                saveFileDetector.StartDetection();
+                var lastSave = saveFileDetector.GetMostRecentFile();
+                if (lastSave != null)
+                {
+                    var saveReader = SourcePortUtil.CreateSourcePort(m_currentPlayForm.SelectedSourcePort)
+                        .CreateSaveGameReader(lastSave);
+                    var saveGameInfo = saveReader.GetInfoFromFile(m_currentPlayForm.SelectedIWad, m_currentPlayForm.SelectedSourcePort);
+                    return saveGameInfo;
+                }
+            }
+
+            return null;
+        }
+
+        private LaunchData GetLaunchFiles(IEnumerable<IGameFile> gameFiles, ISaveGameFile saveGameFile = null)
         {
             IGameFile gameFile = null;
 
@@ -123,7 +158,7 @@ namespace DoomLauncher
                 }
             }
 
-            return new LaunchData(gameFile, (GameFile)gameFile, gameFiles);
+            return new LaunchData(gameFile, (GameFile)gameFile, gameFiles, saveGameFile);
         }
 
         private IGameFile PromptUserMainFile(IEnumerable<IGameFile> gameFiles, out bool accepted)
@@ -213,7 +248,7 @@ namespace DoomLauncher
             GameFilePlayAdapter playAdapter = CreatePlayAdapter(m_currentPlayForm, playAdapter_ProcessExited, AppConfiguration);
             playAdapter.ExtractFiles = false;
             if (m_currentPlayForm.SettingsValid(out string err))
-                ShowLaunchParameters(playAdapter, m_currentPlayForm.GameFile, m_currentPlayForm.SelectedSourcePort);
+                ShowLaunchParameters(playAdapter, m_currentPlayForm.GameFile, m_currentPlayForm.SelectedSourcePort, null);
             else
                 MessageBox.Show(this, err, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -235,7 +270,7 @@ namespace DoomLauncher
         private IGameFile m_currentPlayFile;
         private FilterForm m_filterForm;
 
-        private bool StartPlay(IGameFile gameFile, ISourcePortData sourcePort, bool screenFilter)
+        private bool StartPlay(IGameFile gameFile, ISourcePortData sourcePort, bool screenFilter, LaunchData launchData)
         {
             GameFilePlayAdapter playAdapter = CreatePlayAdapter(m_currentPlayForm, playAdapter_ProcessExited, AppConfiguration);
             m_saveGames = new IFileData[] { };
@@ -245,7 +280,7 @@ namespace DoomLauncher
             CreateFileDetectors(sourcePort);
 
             if (m_currentPlayForm.PreviewLaunchParameters)
-                ShowLaunchParameters(playAdapter, gameFile, sourcePort);
+                ShowLaunchParameters(playAdapter, gameFile, sourcePort, null);
 
             bool isGameFileIwad = IsGameFileIwad(gameFile);
 
@@ -253,7 +288,7 @@ namespace DoomLauncher
                 SetupStatsReader(sourcePort, gameFile);
 
             if (playAdapter.Launch(AppConfiguration.GameFileDirectory, AppConfiguration.TempDirectory, 
-                gameFile, sourcePort, isGameFileIwad))
+                gameFile, sourcePort, isGameFileIwad, launchData))
             {
                 m_currentPlayFile = gameFile;
 
@@ -300,7 +335,7 @@ namespace DoomLauncher
             saveGameHandler.CopySaveGamesToSourcePort(sourcePort, m_saveGames);
         }
 
-        private void ShowLaunchParameters(GameFilePlayAdapter playAdapter, IGameFile gameFile, ISourcePortData sourcePort)
+        private void ShowLaunchParameters(GameFilePlayAdapter playAdapter, IGameFile gameFile, ISourcePortData sourcePort, LaunchData launchData)
         {
             TextBoxForm form = new TextBoxForm
             {
@@ -309,7 +344,7 @@ namespace DoomLauncher
             };
 
             string launchParameters = playAdapter.GetLaunchParameters(AppConfiguration.GameFileDirectory,
-                AppConfiguration.TempDirectory, gameFile, sourcePort, IsGameFileIwad(gameFile));
+                AppConfiguration.TempDirectory, gameFile, sourcePort, IsGameFileIwad(gameFile), launchData);
 
             if (launchParameters != null)
             {

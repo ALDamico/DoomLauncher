@@ -310,6 +310,8 @@ namespace DoomLauncher
             set { cmbSkill.SelectedItem = value; }
         }
 
+        public bool AutoLoadLastSave => m_loadGameCheckbox.Checked;
+
         public bool RememberSettings
         {
             get { return chkRemember.Checked; }
@@ -967,6 +969,12 @@ namespace DoomLauncher
             form.SelectDisplayText(0, 0);
             if (form.ShowDialog(this) == DialogResult.OK)
                 txtParameters.Text = form.DisplayText;
+        }
+
+        private void saveGameInfoLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //TODO Implement form for savegame information
+            throw new System.NotImplementedException();
         }
     }
 }
