@@ -18,5 +18,6 @@ namespace DoomLauncher.SourcePort
         bool StatisticsSupported();
         IStatisticsReader CreateStatisticsReader(IGameFile gameFile, IEnumerable<IStatsData> existingStats);
         ISaveGameReader CreateSaveGameReader(FileInfo file);
+        bool LoadSaveGameSupported();
     }
 }

@@ -18,6 +18,11 @@ namespace DoomLauncher.SourcePort
             return exe.Contains("prboom") || exe.Contains("glboom");
         }
 
+        public override bool LoadSaveGameSupported()
+        {
+            return true;
+        }
+
         public override bool StatisticsSupported()
         {
             return true;

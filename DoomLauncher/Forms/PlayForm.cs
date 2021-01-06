@@ -343,6 +343,14 @@ namespace DoomLauncher
             get { return chkSaveStats.Enabled && chkSaveStats.Checked; }
         }
 
+        public bool AutoLoad
+        {
+            get
+            {
+                return chkAutoload.Enabled && chkAutoload.Checked;
+            }
+        }
+
         public bool PreviewLaunchParameters
         {
             get { return chkPreview.Checked; }
@@ -388,6 +396,7 @@ namespace DoomLauncher
             {
                 ISourcePortData sourcePort = cmbSourcePorts.SelectedItem as ISourcePortData;
                 chkSaveStats.Enabled = SaveStatisticsSupported(sourcePort);
+                chkAutoload.Enabled = AutoloadSupported(sourcePort);
                 SetAdditionalFiles(resetAdditionalFiles);
                 PopulateDemos();
             }
@@ -411,6 +420,11 @@ namespace DoomLauncher
         private bool SaveStatisticsSupported(ISourcePortData sourcePort)
         {
             return SourcePortUtil.CreateSourcePort(sourcePort).StatisticsSupported();
+        }
+
+        private bool AutoloadSupported(ISourcePortData sourcePort)
+        {
+            return SourcePortUtil.CreateSourcePort(sourcePort).LoadSaveGameSupported();
         }
 
         private void chkMap_CheckedChanged(object sender, EventArgs e)

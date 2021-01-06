@@ -83,6 +83,11 @@ namespace DoomLauncher.SourcePort
             return null;
         }
 
+        public virtual bool LoadSaveGameSupported()
+        {
+            return false;
+        }
+
         private static string BuildWarpLegacy(string map)
         {
             List<string> numbers = new List<string>();

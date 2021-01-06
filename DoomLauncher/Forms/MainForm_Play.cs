@@ -378,6 +378,7 @@ namespace DoomLauncher
             playAdapter.PlayDemo = form.PlayDemo;
             playAdapter.ExtraParameters = form.ExtraParameters;
             playAdapter.SaveStatistics = form.SaveStatistics;
+            playAdapter.LoadSaveFile = form.AutoLoad;
             playAdapter.ProcessExited += processExited;
             if (form.SelectedDemo != null) playAdapter.PlayDemoFile = Path.Combine(appConfig.DemoDirectory.GetFullPath(), form.SelectedDemo.FileName);
             return playAdapter;

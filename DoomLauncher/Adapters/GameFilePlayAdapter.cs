@@ -117,6 +117,16 @@ namespace DoomLauncher
             if (SaveStatistics && statsReader != null && !string.IsNullOrEmpty(statsReader.LaunchParameter))
                 sb.Append(" " + statsReader.LaunchParameter);
 
+            if (LoadSaveFile && sourcePort.LoadSaveGameSupported())
+            {
+                var lastFile = DataCache.Instance.DataSourceAdapter.GetFiles(GameFile, FileType.SaveGame)
+                    .OrderByDescending(file => file.DateCreated).FirstOrDefault();
+                if (lastFile != null)
+                {
+                    sb.Append(" -loadgame ").Append(lastFile.OriginalFileName);
+                }
+            }
+
             return sb.ToString();
         }
 
@@ -319,6 +329,8 @@ namespace DoomLauncher
         public string ExtraParameters { get; set; }
         public string[] SpecificFiles { get; set; }
         public bool SaveStatistics { get; set; }
+        
+        public bool LoadSaveFile { get; set; }
 
         public ISourcePortData SourcePort { get; private set; }
         public IGameFile GameFile { get; private set; }

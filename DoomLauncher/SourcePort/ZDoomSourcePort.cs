@@ -11,6 +11,11 @@ namespace DoomLauncher.SourcePort
 
         }
 
+        public override bool LoadSaveGameSupported()
+        {
+            return true;
+        }
+
         public override bool Supported()
         {
             string exe = m_sourcePortData.Executable.ToLower();
